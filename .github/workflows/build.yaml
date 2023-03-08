@@ -1,17 +1,40 @@
 name: build 
 
 on: [push]
+env:
+  WF_ENV: Avaliable to all jobs
 
 jobs:
-  run-shell-command: 
+  create-issue:
     runs-on: ubuntu-latest
     steps:
-      - name: echo a string
-        run: echo "Hello World"
-
-      - name: multiline script
+      - name: Push a random file
         run: |
-          node -v
-          npm -v
+          pwd
+          ls -a
+          git init
+          git remote add origin  "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git"
+          git config --global user.email "my-example@example.com"
+          git config --global user.name "my-example"
+          git fetch
+          git checkout master
+          git branch --set-upstream-to=origin/master
+          git pull
+          ls -a
+          echo $RANDOM >> random.txt
+          ls -a
+          git add -A
+          git commit -m"Random file"
+
+
+
+
+
+      #   run: echo "Hello World"
+
+      # - name: multiline script
+      #   run: |
+      #     node -v
+      #     npm -v
           
 
